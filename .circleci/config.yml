@@ -1,16 +1,10 @@
 version: 2
 
-references:
-  container_config: &container_config
-    working_directory: ~/project
-    docker:
-      - image: alpine
-
 jobs:
   echo:
-    working_directory: ~/project
     docker:
       - image: alpine
+    working_directory: ~/project
     steps:
       - checkout
       - run: echo ${PARAM}
