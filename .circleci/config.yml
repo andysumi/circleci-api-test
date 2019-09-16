@@ -4,39 +4,38 @@ references:
   container_config: &container_config
     working_directory: ~/project
     docker:
-      - image: circleci/node
+      - image: alpine
 
 jobs:
-  echo:
+  echo1:
     <<: *container_config
     steps:
       - checkout
-      - run: echo $TEXT
+      - run: echo $HOGE
 
-  test:
+  echo2:
     <<: *container_config
-
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run test
+      - run: echo $FUGA
+
+  echo3:
+    <<: *container_config
+    steps:
+      - checkout
+      - run: echo $PIYO
 
 workflows:
   version: 2
-  test-and-deploy:
+  echo:
     jobs:
-      - echo
-      - test:
+      - echo1
+      - echo2:
           requires:
-            - echo
+            - echo1
           filters:
             branches:
               only: master
+      - echo3:
+          requires:
+            - echo2
