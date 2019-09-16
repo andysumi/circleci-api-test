@@ -1,0 +1,41 @@
+version: 2
+
+references:
+  container_config: &container_config
+    working_directory: ~/project
+    docker:
+      - image: circleci/node
+
+jobs:
+  echo:
+    <<: *container_config
+    steps:
+      - checkout
+      - run: echo $TEXT
+
+  test:
+    <<: *container_config
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run test
+
+workflows:
+  version: 2
+  echo-and-test:
+    jobs:
+      - echo
+      - test:
+          requires:
+            - echo
+          filters:
+            - only: master
