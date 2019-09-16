@@ -1,26 +1,26 @@
 version: 2
 
-references:
-  container_config: &container_config
+jobs:
+  echo1:
     working_directory: ~/project
     docker:
       - image: alpine
-
-jobs:
-  echo1:
-    <<: *container_config
     steps:
       - checkout
       - run: echo $HOGE
 
   echo2:
-    <<: *container_config
+    working_directory: ~/project
+    docker:
+      - image: alpine
     steps:
       - checkout
       - run: echo $FUGA
 
   echo3:
-    <<: *container_config
+    working_directory: ~/project
+    docker:
+      - image: alpine
     steps:
       - checkout
       - run: echo $PIYO
