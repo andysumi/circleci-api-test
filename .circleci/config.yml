@@ -7,35 +7,10 @@ references:
       - image: alpine
 
 jobs:
-  echo1:
-    <<: *container_config
-    steps:
-      - checkout
-      - run: echo $HOGE
-
-  echo2:
-    <<: *container_config
-    steps:
-      - checkout
-      - run: echo $FUGA
-
-  echo3:
-    <<: *container_config
-    steps:
-      - checkout
-      - run: echo $PIYO
-
-workflows:
-  version: 2
   echo:
-    jobs:
-      - echo1
-      - echo2:
-          requires:
-            - echo1
-          filters:
-            branches:
-              only: master
-      - echo3:
-          requires:
-            - echo2
+    working_directory: ~/project
+    docker:
+      - image: alpine
+    steps:
+      - checkout
+      - run: echo ${PARAM}
