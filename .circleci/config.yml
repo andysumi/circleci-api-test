@@ -31,11 +31,12 @@ jobs:
 
 workflows:
   version: 2
-  echo-and-test:
+  test-and-deploy:
     jobs:
       - echo
       - test:
           requires:
             - echo
           filters:
-            - only: master
+            branches:
+              only: master
